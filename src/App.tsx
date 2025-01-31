@@ -15,8 +15,8 @@ const App = () => {
   // 1 - fetching data
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      const res = await fetch(url);
-      const data = await res.json();
+      const res: Response = await fetch(url);
+      const data: ProductProp[] = await res.json();
       setProducts(data);
     };
 
