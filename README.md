@@ -25,3 +25,7 @@ body: JSON.stringify(product), <!-- content being send-->
 **onChange={(e) => setPrice(Number(e.target.value))}**
 
 e.target.value gives us a string, but in TypeScript, when I type the useState as number, I shouldnt be able to use the event, so I used Number method to convert string to a number.
+
+### 3 - Dynamic Loading
+
+Not something that I have much to say, I just made new products show after create them, as a SPA should be.

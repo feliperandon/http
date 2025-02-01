@@ -13,7 +13,7 @@ const App = () => {
   const [products, setProducts] = useState<ProductProp[]>([]);
 
   const [name, setName] = useState<string>("");
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number | undefined>(undefined);
 
   // 1 - fetching data
   useEffect(() => {
@@ -42,6 +42,14 @@ const App = () => {
       },
       body: JSON.stringify(product),
     });
+
+    // 3 - dynamic loading
+    const addedProduct: ProductProp = await res.json();
+
+    setProducts((prevProducts) => [...prevProducts, addedProduct]);
+
+    setName("");
+    setPrice(undefined);
   };
 
   return (
@@ -69,7 +77,7 @@ const App = () => {
             Preço:
             <input
               type="number"
-              value={price}
+              value={price !== undefined ? price : ""}
               name="price"
               onChange={(e) => setPrice(Number(e.target.value))}
             />
