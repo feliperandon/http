@@ -1,30 +1,37 @@
 import "./App.css";
 import { FormEvent, useEffect, useState } from "react";
+import { useFetch } from "./hooks/useFetch";
+import { ProductProp } from "./types/ProductProp";
 
 const url = "http://localhost:3000/products";
 
-type ProductProp = {
-  id: number;
-  name: string;
-  price: number;
-};
+// 4 - custom hook
 
 const App = () => {
   const [products, setProducts] = useState<ProductProp[]>([]);
+
+  // 4 - custom hook
+  const { data: items, updateData } = useFetch<ProductProp[]>(url);
 
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number | undefined>(undefined);
 
   // 1 - fetching data
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      const res: Response = await fetch(url);
-      const data: ProductProp[] = await res.json();
-      setProducts(data);
-    };
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<void> => {
+  //     const res: Response = await fetch(url);
+  //     const data: ProductProp[] = await res.json();
+  //     setProducts(data);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    if (items) {
+      setProducts(items);
+    }
+  }, [items]);
 
   // 2 - adding product
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -46,7 +53,9 @@ const App = () => {
     // 3 - dynamic loading
     const addedProduct: ProductProp = await res.json();
 
-    setProducts((prevProducts) => [...prevProducts, addedProduct]);
+    if (items) {
+      updateData([...items, addedProduct]);
+    }
 
     setName("");
     setPrice(undefined);
@@ -56,11 +65,12 @@ const App = () => {
     <div className="App">
       <h1>Lista de Produtos</h1>
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - R${product.price}
-          </li>
-        ))}
+        {items &&
+          items.map((product) => (
+            <li key={product.id}>
+              {product.name} - R${product.price}
+            </li>
+          ))}
       </ul>
       <div className="add-product">
         <form onSubmit={handleSubmit}>

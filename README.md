@@ -29,3 +29,9 @@ e.target.value gives us a string, but in TypeScript, when I type the useState as
 ### 3 - Dynamic Loading
 
 Not something that I have much to say, I just made new products show after create them, as a SPA should be.
+
+### 4 - Custom Hook
+
+I truly dont know what I am doing, but it is working. There are many things that I dont know in TypeScript, so I cant explain yet.
+
+Created a custom hook which is responsible to get an URL and return back the database. A Fetch hook.
